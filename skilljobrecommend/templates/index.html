@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Skill Assessment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #124E66;
+            --primary-hover: #2E3944;
+            --secondary-color: #748D92;
+            --success-color: #22c55e;
+            --danger-color: #ef4444;
+            --background-color: #D3D9D4;
+            --card-background: #ffffff;
+            --text-primary: #212A31;
+            --text-secondary: #748D92;
+            --border-color: #D3D9D4;
+            --shadow-sm: 0 1px 2px 0 rgba(33, 42, 49, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(33, 42, 49, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(33, 42, 49, 0.1);
+            --header-bg: #212A31;
+            --footer-bg: #2E3944;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--header-bg);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--card-background);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        h1 {
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        h2 {
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .skill-selector {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            background-color: var(--card-background);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        select {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--card-background);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        select:hover {
+            border-color: var(--primary-color);
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        button i {
+            font-size: 1.1rem;
+        }
+
+        #currentLevel {
+            background-color: var(--background-color);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 500;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        #quizForm {
+            background-color: var(--background-color);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question {
+            background-color: var(--card-background);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .question:hover {
+            transform: translateY(-2px);
+        }
+
+        .question label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            background-color: var(--background-color);
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: rgba(18, 78, 102, 0.1);
+        }
+
+        .option input[type="radio"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+        }
+
+        .option label {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        #skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .skill-card {
+            background-color: var(--card-background);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background-color: var(--background-color);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin: 0.75rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            transition: width 0.5s ease;
+        }
+
+        .feedback-section {
+            background-color: var(--background-color);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            margin: 2rem 0;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .level-score {
+            font-size: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background-color: var(--card-background);
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pass-fail {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            margin-left: 1rem;
+            display: inline-block;
+        }
+
+        .pass {
+            color: #15803d;
+            background-color: #dcfce7;
+        }
+
+        .fail {
+            color: #b91c1c;
+            background-color: #fee2e2;
+        }
+
+        .topic-score {
+            background-color: var(--card-background);
+            padding: 1rem;
+            margin: 0.75rem 0;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .topic-name {
+            flex: 1;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .topic-progress {
+            flex: 2;
+        }
+
+        .recommendations {
+            margin-top: 2rem;
+        }
+
+        .recommendation-card {
+            background-color: var(--card-background);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .recommendation-card h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .resource-link {
+            display: block;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .resource-link:hover {
+            background-color: rgba(18, 78, 102, 0.1);
+            color: var(--primary-hover);
+            transform: translateX(5px);
+        }
+
+        .next-level-button {
+            display: block;
+            width: auto;
+            max-width: 300px;
+            margin: 2rem auto;
+            padding: 1rem 2rem;
+            background-color: var(--success-color);
+            font-weight: 500;
+        }
+
+        .next-level-button:hover {
+            background-color: #15803d;
+        }
+
+        #jobs {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .job-item {
+            background-color: var(--card-background);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .job-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .job-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .job-item a:hover {
+            color: var(--primary-hover);
+        }
+
+        .job-item div {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .skill-selector {
+                flex-direction: column;
+            }
+
+            select, button {
+                width: 100%;
+            }
+
+            #skills {
+                grid-template-columns: 1fr;
+            }
+
+            #jobs {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                Skill Assessment
+            </a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>Skill Assessment & Job Recommendations</h1>
+            
+            <div class="skill-selector">
+                <select id="skillSelect">
+                    <option value="Python">Python</option>
+                    <option value="Data Structures">Data Structures</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="SQL">SQL</option>
+                    <option value="Machine Learning">Machine Learning</option>
+                </select>
+                <button onclick="startQuiz()">
+                    <i class="fas fa-play"></i>
+                    Start Quiz
+                </button>
+            </div>
+
+            <div id="currentLevel"></div>
+
+            <form id="quizForm" style="display: none;">
+                <div id="questions"></div>
+                <button type="submit">
+                    <i class="fas fa-check"></i>
+                    Submit Answers
+                </button>
+            </form>
+
+            <div id="levelFeedback" class="feedback-section" style="display: none;">
+                <div class="level-score">
+                    <span id="scoreDisplay"></span>
+                    <span id="passFailStatus"></span>
+                </div>
+                <h3>Topic Performance</h3>
+                <div id="topicScores"></div>
+                
+                <div class="recommendations">
+                    <h3>Recommended Learning Resources</h3>
+                    <div id="learningResources"></div>
+                </div>
+
+                <button id="nextLevelBtn" class="next-level-button" style="display: none;">
+                    <i class="fas fa-arrow-right"></i>
+                    Proceed to Next Level
+                </button>
+            </div>
+
+            <h2>Your Skills</h2>
+            <div id="skills"></div>
+
+            <button onclick="getJobs()" id="jobButton" style="display: none;">
+                <i class="fas fa-briefcase"></i>
+                Get Job Recommendations
+            </button>
+
+            <h2>Recommended Jobs</h2>
+            <div id="jobs"></div>
+        </div>
+    </main>
+
+    <script>
+        let proficiency = {};
+        let currentSkill = null;
+        let currentLevel = 'Beginner';
+        let userProgress = {};
+
+        function startQuiz() {
+            currentSkill = document.getElementById('skillSelect').value;
+            currentLevel = 'Beginner';
+            document.getElementById('currentLevel').innerText = `Level: ${currentLevel} (${currentSkill})`;
+            document.getElementById('levelFeedback').style.display = 'none';
+            loadQuestions(currentSkill, currentLevel);
+            document.getElementById('quizForm').style.display = 'block';
+        }
+
+        function loadQuestions(skill, level) {
+            fetch(`/get_questions/${skill}/${level}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Raw questions data received:", data);
+                    const questionsDiv = document.getElementById('questions');
+                    questionsDiv.innerHTML = '';
+                    
+                    if (!Array.isArray(data) || data.length === 0) {
+                        questionsDiv.innerHTML = '<div class="question">No questions available for this level.</div>';
+                        return;
+                    }
+
+                    data.forEach((q, index) => {
+                        console.log(`\nProcessing question ${index + 1}:`, q);
+                        let questionDiv = document.createElement('div');
+                        questionDiv.className = 'question';
+                        
+                        // Ensure options is an array
+                        let options = q.options;
+                        if (!Array.isArray(options)) {
+                            console.warn(`Options for question ${index + 1} is not an array:`, options);
+                            if (typeof options === 'string') {
+                                options = options.split(',').map(opt => opt.trim());
+                            } else {
+                                console.error('Invalid options format:', options);
+                                options = [];
+                            }
+                        }
+                        
+                        console.log(`Processed options for question ${index + 1}:`, options);
+                        
+                        // Create question HTML
+                        const questionHtml = `
+                            <label>Question ${index + 1}: ${q.text}</label>
+                            <div class="options">
+                                ${options.map((opt, optIndex) => {
+                                    console.log(`Creating option ${optIndex + 1}:`, opt);
+                                    return `
+                                        <div class="option">
+                                            <input type="radio" 
+                                                   name="q${q.id}" 
+                                                   value="${opt.replace(/"/g, '&quot;')}" 
+                                                   id="q${q.id}_${optIndex}">
+                                            <label for="q${q.id}_${optIndex}">${opt}</label>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        `;
+                        
+                        questionDiv.innerHTML = questionHtml;
+                        questionsDiv.appendChild(questionDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading questions:", error);
+                    const questionsDiv = document.getElementById('questions');
+                    questionsDiv.innerHTML = '<div class="question">Error loading questions. Please try again.</div>';
+                });
+        }
+
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let answers = {};
+            document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+                let qId = input.name.replace('q', '');
+                answers[qId] = input.value;
+            });
+
+            fetch('/submit_answers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    answers: answers,
+                    skill: currentSkill,
+                    level: currentLevel,
+                    user_id: 'default_user'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                userProgress = data.progress;
+                proficiency = data.proficiency;
+                updateSkillsDisplay(data.proficiency);
+                showLevelFeedback(data);
+            });
+        });
+
+        function showLevelFeedback(data) {
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('levelFeedback').style.display = 'block';
+            
+            // Display score
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const passFailStatus = document.getElementById('passFailStatus');
+            scoreDisplay.textContent = `Score: ${data.level_score.toFixed(1)}%`;
+            passFailStatus.textContent = data.level_score >= 70 ? 'PASS' : 'FAIL';
+            passFailStatus.className = `pass-fail ${data.level_score >= 70 ? 'pass' : 'fail'}`;
+
+            // Display topic scores
+            const topicScoresDiv = document.getElementById('topicScores');
+            topicScoresDiv.innerHTML = Object.entries(data.topic_scores)
+                .map(([topic, score]) => `
+                    <div class="topic-score">
+                        <span class="topic-name">${topic}</span>
+                        <div class="topic-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${score}%"></div>
+                            </div>
+                        </div>
+                        <span>${score.toFixed(1)}%</span>
+                    </div>
+                `).join('');
+
+            // Display learning recommendations
+            const resourcesDiv = document.getElementById('learningResources');
+            if (data.level_score >= 70) {
+                resourcesDiv.innerHTML = `
+                    <div class="recommendation-card">
+                        <h4>Great job! You've shown good understanding of these topics.</h4>
+                        <p>Here are some resources to further enhance your knowledge:</p>
+                        ${data.learning_recommendations.map(resource => 
+                            `<a href="${resource.url}" target="_blank" class="resource-link">${resource.title}</a>`
+                        ).join('')}
+                    </div>
+                `;
+            } else {
+                resourcesDiv.innerHTML = `
+                    <div class="recommendation-card">
+                        <h4>Areas for Improvement:</h4>
+                        ${data.improvements_needed.map(imp => 
+                            `<div>${imp.topic}: ${imp.score.toFixed(1)}%</div>`
+                        ).join('')}
+                    </div>
+                    <div class="recommendation-card">
+                        <h4>Recommended Learning Resources:</h4>
+                        <p>Review these materials to strengthen your understanding:</p>
+                        ${data.learning_recommendations.map(resource => 
+                            `<a href="${resource.url}" target="_blank" class="resource-link">${resource.title}</a>`
+                        ).join('')}
+                    </div>
+                `;
+            }
+
+            // Handle next level button
+            const nextLevelBtn = document.getElementById('nextLevelBtn');
+            if (data.next_level && data.level_score >= 70) {
+                nextLevelBtn.style.display = 'block';
+                nextLevelBtn.onclick = () => {
+                    currentLevel = data.next_level;
+                    document.getElementById('currentLevel').innerText = `Level: ${currentLevel} (${currentSkill})`;
+                    document.getElementById('levelFeedback').style.display = 'none';
+                    loadQuestions(currentSkill, currentLevel);
+                    document.getElementById('quizForm').style.display = 'block';
+                };
+            } else {
+                nextLevelBtn.style.display = 'none';
+                // Only show job recommendations button if user passes Advanced level
+                if (data.level_score >= 70 && currentLevel === 'Advanced') {
+                    document.getElementById('jobButton').style.display = 'block';
+                } else {
+                    document.getElementById('jobButton').style.display = 'none';
+                }
+            }
+        }
+
+        function updateSkillsDisplay(proficiency) {
+            const skillsDiv = document.getElementById('skills');
+            skillsDiv.innerHTML = Object.entries(proficiency)
+                .map(([skill, perc]) => `
+                    <div class="skill-card">
+                        <div>${skill}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${perc}%"></div>
+                        </div>
+                        <div>${perc.toFixed(1)}%</div>
+                    </div>
+                `).join('');
+        }
+
+        function getJobs() {
+            fetch('/get_recommended_jobs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(proficiency)
+            })
+            .then(response => response.json())
+            .then(jobs => {
+                const jobsDiv = document.getElementById('jobs');
+                jobsDiv.innerHTML = '';
+                jobs.forEach(job => {
+                    let jobDiv = document.createElement('div');
+                    jobDiv.className = 'job-item';
+                    jobDiv.innerHTML = `
+                        <a href="${job.redirect_url}" target="_blank">${job.title}</a>
+                        <div>${job.company.display_name}</div>
+                        <div>${job.location.display_name}</div>
+                    `;
+                    jobsDiv.appendChild(jobDiv);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
